@@ -9,10 +9,10 @@ class AutonomyState:
     def next_state(self):
         return self.current_state.next_state(self)
 
-    def set_state(self, new_state)
+    def set_state(self, new_state):
         self.current_state = new_state
 
-class state(metaclass=abc.ABCMeta):
+class State(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
     def next_state(self):
