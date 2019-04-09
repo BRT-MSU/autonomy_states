@@ -1,4 +1,4 @@
-from . import robot_states as states
+import robot_states as states
 
 class StateMachine (object):
     def __init__(self):

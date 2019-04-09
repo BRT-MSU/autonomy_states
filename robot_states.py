@@ -1,5 +1,5 @@
-from . import state_class as State #used by all states
-from . import myAlgorithm as alg #PathingState
+import state_class as State #used by all states
+import myAlgorithm as alg #PathingState
 
 
 class PathingState(State):
