@@ -39,10 +39,8 @@ class StartUpState(State):
 
 
 class NavigationState(State):
-    global return_trip
-    global first_Trip
 
-    def __init__(self, controller):
+    def __init__(self, controller, to_dig, reverse=False):
         super().init(controller)
         if first_Trip == True:
             pass

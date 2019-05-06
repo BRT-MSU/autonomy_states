@@ -8,9 +8,6 @@ class StateMachine(object):
         self.previous_states = []
         self.threads = [] #used to keep track of all threads
 
-    def on_event(self, event):
-        return self
-
     def change_state(self, new_state):
         self.previous_state = self.current_state
         self.current_state = new_state
@@ -32,8 +29,11 @@ class StateMachine(object):
         ball_tracking_state.start()
         threads.append(ball_tracking_state)
 
+        first_trip = True
+
         while self.controller.isAutonomyActivated:
-            self.run_state(states.NavigationState(self.controller))
+            self.run_state(states.NavigationState(self.controller), to_dig=True, first_trip)
+            first_trip = False
             self.run_state(states.MiningState(self.controller))
             self.run_state(states.NavigationState(self.controller)) 
             self.run_state(states.DumpingState(self.controller))
