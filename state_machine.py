@@ -9,21 +9,6 @@ class StateMachine(object):
         self.previous_state = []
 
     def on_event(self, event):
-        if event == 'startup':
-            self.current_state = states.StartUpState()
-            return self.current_state
-        elif event == 'navigation':
-            self.current_state = states.NavigationState()
-            return self.current_state
-        elif event == 'pathing':
-            self.current_state = states.PathingState()
-            return self.current_state
-        elif event == 'mining':
-            self.current_state = states.MiningState()
-            return self.current_state
-        elif event == 'dumping':
-            self.current_state = states.DumpingState()
-            return self.current_state
         return self
 
     def change_state(self, new_state):
@@ -31,6 +16,7 @@ class StateMachine(object):
         self.current_state = new_state
 
     def run(self):
+        states_list = ['nav', 'mine', 'dump']
         threads = [] #used to keep track of all threads
         startup_state = states.StartUpState()
         startup_state.start()
@@ -41,29 +27,45 @@ class StateMachine(object):
         ball_tracking_state.start()
         threads.append(ball_tracking_state)
 
-        while self.controller.autonomy_activated: #TODO: look at actual variable name
-            navigation_state = states.NavigationState()
-            navigation_state.start()
-            threads.append(navigation_state)
-            navigation_state.join()
-            threads.remove(navigation_state)
+        while self.controller.isAutonomyActivated:
+            # navigation_state = states.NavigationState()
+            # navigation_state.start()
+            # threads.append(navigation_state)
+            # navigation_state.join()
+            # threads.remove(navigation_state)
+            #
+            # mining_state = states.MiningState()
+            # mining_state.start()
+            # threads.append(mining_state)
+            # mining_state.join()
+            # threads.remove(mining_state)
+            #
+            # navigation_state = states.NavigationState()
+            # navigation_state.start()
+            # threads.append(navigation_state)
+            # navigation_state.join()
+            # threads.remove(navigation_state)
+            #
+            # dumping_state = states.DumpingState()
+            # dumping_state.start()
+            # threads.append(dumping_state)
+            # threads.remove(dumping_state)
 
-            mining_state = states.MiningState()
-            mining_state.start()
-            threads.append(mining_state)
-            mining_state.join()
-            threads.remove(mining_state)
+            for i, state in enumerate(states_list):
+                if states_list[i] == 'nav':
+                    state = states.NavigationState()
+                elif states_list[i] == 'mine':
+                    state = states.MiningState()
+                elif states_list[i] == 'dump':
+                    state = states.DumpingState()
 
-            navigation_state = states.NavigationState()
-            navigation_state.start()
-            threads.append(navigation_state)
-            navigation_state.join()
-            threads.remove(navigation_state)
-
-            dumping_state = states.DumpingState()
-            dumping_state.start()
-            threads.append(dumping_state)
-            threads.remove(dumping_state)
+                state.start()
+                threads.append(state)
+                if states_list[i] == 'dump':
+                    pass
+                else:
+                    state.join()
+                threads.remove(state)
 
 
 

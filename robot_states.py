@@ -1,6 +1,7 @@
 import state_class as State #used by all states
 import AStar as alg #PathingState
 import motor_lib as motorDriver
+import multi_ball_tracker as balls
 
 class BallTrackingState(State):
     def __init__(self, controller):
@@ -9,7 +10,11 @@ class BallTrackingState(State):
         pass
 
     def run(self):
-        pass
+        state_active = True
+        while state_active:
+            get_balls = balls.FrameProcessor.run()
+            if get_balls is not None:
+                pass
 
     def join(self):
         super().join()
@@ -26,13 +31,11 @@ class StartUpState(State):
         #face front of robot away from mining area
         pass
 
-    def on_event(self, event):
-        if event == 'pathing':
-            return PathingState()
-        return self
 
     def run(self):
-        pass
+        state_active = True
+        while state_active:
+            pass
 
 
 class NavigationState(State):
@@ -43,17 +46,12 @@ class NavigationState(State):
         super().init(controller)
         if first_Trip == True:
             pass
-        else:
-            self.path_to_follow = path
-            print(self.path_to_follow)
 
-    def on_event(self, event):
-        if event == 'next':
-            return PathingState()
-        return self
 
     def run(self):
-        pass
+        state_active = True
+        while state_active:
+            pass
 
 
 class PathingState(State):
@@ -68,11 +66,11 @@ class PathingState(State):
         self.result, self.cost = alg.AStarSearch(navPoints=[start,end], behind=behind, graph=self.graph)
         print("init pathingstate")
 
-    def on_event(self, event):
-        return NavigationState(self.result) #feed the resulting path to the navigation state
 
     def run(self):
-        pass
+        state_active = True
+        while state_active:
+            pass
 
 class MiningState(State):
     def __init__(self, controller):
